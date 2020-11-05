@@ -1,4 +1,6 @@
 public class MyInt {
+
+	private int test = 0;
     private int val;
     public MyInt() {
         val=0;
