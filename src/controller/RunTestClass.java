@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Arrays;
+
 public class RunTestClass {
 
 
@@ -18,7 +20,7 @@ public class RunTestClass {
 
     }
 
-    public void runTest() {
-
+    public void runTest(ClassHandler classes) {
+        System.out.println(Arrays.toString(classes.getClassByIndex(0).getMethods()));
     }
 }

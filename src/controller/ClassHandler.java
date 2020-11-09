@@ -1,6 +1,5 @@
 package controller;
 import se.umu.cs.unittest.TestClass;
-import view.MiddlePanel;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
