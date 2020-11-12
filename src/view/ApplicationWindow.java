@@ -71,7 +71,7 @@ public class ApplicationWindow {
     private JPanel middlePanel() {
         JPanel middle = new JPanel();
         middle.setBorder(BorderFactory.createTitledBorder("Test results"));
-        textArea = new JTextArea(10, 30);
+        textArea = new JTextArea(15, 50);
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setEditable(false);
         middle.add(scrollPane, BorderLayout.CENTER);

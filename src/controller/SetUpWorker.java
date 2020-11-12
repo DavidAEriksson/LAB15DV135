@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class SetUpWorker extends SwingWorker<Map<String, Boolean>, Void> {
+public class SetUpWorker extends SwingWorker<HashMap<String, Object>, Void> {
 
     private final Class<?> cls;
     private final JTextArea textArea;
@@ -17,12 +17,9 @@ public class SetUpWorker extends SwingWorker<Map<String, Boolean>, Void> {
     }
 
     @Override
-    protected Map<String, Boolean> doInBackground() {
+    protected HashMap<String, Object> doInBackground() {
         // Create new map to store test names and their results.
-        Map<String, Boolean> resultMap = new HashMap<>();
-
-        System.out.println("Methods in class " + cls.getName() + "\n" + Arrays.toString(cls.getDeclaredMethods()));
-
+        HashMap<String, Object> resultMap = new HashMap<>();
 
         java.lang.reflect.Method setUp = null;
         java.lang.reflect.Method tearDown = null;
@@ -44,9 +41,10 @@ public class SetUpWorker extends SwingWorker<Map<String, Boolean>, Void> {
                     e.printStackTrace();
                 }
                 try {
-                    resultMap.put(method.getName(), (Boolean) method.invoke(t));
+                    resultMap.put(method.getName(), method.invoke(t));
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     System.out.println("testFailingByException: " + e);
+                    resultMap.put(method.getName(), "FAILED: Generated exception: " + e);
                     e.printStackTrace();
                 }
                 try {
@@ -56,17 +54,38 @@ public class SetUpWorker extends SwingWorker<Map<String, Boolean>, Void> {
                 }
             }
         }
-
-        System.out.println(resultMap.entrySet());
         return resultMap;
     }
 
     @Override
     protected void done() {
+        int totalTestCount = 0;
+        int trueCount = 0;
+        int falseCount = 0;
+        int exceptionCount = 0;
+
         try {
-            for (Map.Entry<String, Boolean> stringBooleanEntry : get().entrySet()) {
-                textArea.append(stringBooleanEntry.getKey() + ": " + stringBooleanEntry.getValue() + "\n");
+            for (var stringObjectEntry : get().entrySet()) {
+                if(stringObjectEntry.getValue().equals(true)) {
+                    trueCount++;
+                }
+                else if(stringObjectEntry.getValue().equals(false)) {
+                    falseCount++;
+                }
+                else if(!stringObjectEntry.getValue().equals(true) || !stringObjectEntry.getValue().equals(false)) {
+                    exceptionCount++;
+                }
+                textArea.append(stringObjectEntry.getKey() + ": " + stringObjectEntry.getValue() + "\n");
+                totalTestCount++;
             }
+
+            textArea.append(
+                    "\nTest summary: \n" +
+                    totalTestCount + " tests completed where \n" +
+                    trueCount + " tests succeeded.\n" +
+                    falseCount + " tests failed.\n" +
+                    exceptionCount + " tests failed because of an exception."
+            );
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
