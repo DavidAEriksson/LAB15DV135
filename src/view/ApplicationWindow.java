@@ -1,5 +1,6 @@
 package view;
 
+import listeners.ClearButtonListener;
 import listeners.RunButtonListener;
 
 import javax.swing.*;
@@ -9,9 +10,7 @@ public class ApplicationWindow {
 
     // Application event listeners.
     public RunButtonListener runButtonListener;
-
-    // Application frame.
-    private JFrame frame;
+    public ClearButtonListener clearButtonListener;
 
     // Upper panel components.
     public JTextField textField;
@@ -24,7 +23,8 @@ public class ApplicationWindow {
     public JButton clearButton;
 
     public ApplicationWindow(String title) {
-        frame = new JFrame(title);
+        // Application frame.
+        JFrame frame = new JFrame(title);
         // Set frame default close operation to EXIT_ON_CLOSE to stop process from running.
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Set the frame height and width.
@@ -41,8 +41,12 @@ public class ApplicationWindow {
         frame.add(lower, BorderLayout.SOUTH);
 
         // Add listeners to buttons.
-runButtonListener = new RunButtonListener(textField, textArea);
+        runButtonListener = new RunButtonListener(textField, textArea);
         runButton.addActionListener(runButtonListener);
+
+        clearButtonListener = new ClearButtonListener(textArea);
+        clearButton.addActionListener(clearButtonListener);
+
         // Pack content in frame.
         frame.pack();
 
@@ -67,7 +71,7 @@ runButtonListener = new RunButtonListener(textField, textArea);
     private JPanel middlePanel() {
         JPanel middle = new JPanel();
         middle.setBorder(BorderFactory.createTitledBorder("Test results"));
-        textArea = new JTextArea(5, 20);
+        textArea = new JTextArea(10, 30);
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setEditable(false);
         middle.add(scrollPane, BorderLayout.CENTER);
