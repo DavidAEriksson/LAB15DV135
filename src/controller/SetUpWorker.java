@@ -99,9 +99,9 @@ public class SetUpWorker extends SwingWorker<HashMap<String, Object>, Void> {
                     resultMap.put(method.getName(), method.invoke(t));
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     /*
-                        Put failed method due to exception in resultMap.
+                        Put failed method due to exception cause in resultMap.
                      */
-                    resultMap.put(method.getName(), "FAILED: Generated exception: " + e);
+                    resultMap.put(method.getName(), "FAILED: Generated exception: " + e.getCause());
                     e.printStackTrace();
                 }
                 try {

@@ -4,6 +4,7 @@ public class Test1 implements TestClass {
     private MyInt myInt;
 
     public Test1() {
+
     }
 
     public void setUp() {
@@ -45,8 +46,5 @@ public class Test1 implements TestClass {
     //Test that should fail
     public boolean testFailing() {
         return false;
-
     }
-
-
 }

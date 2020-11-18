@@ -18,8 +18,8 @@ import java.util.concurrent.ExecutionException;
 public class NonSetUpWorker extends SwingWorker<HashMap<String, Object>, Void> {
 
     /*
-            Test class and application JTextArea.
-         */
+        Test class and application JTextArea.
+    */
     private final Class<?> cls;
     private final JTextArea textArea;
 
@@ -78,9 +78,9 @@ public class NonSetUpWorker extends SwingWorker<HashMap<String, Object>, Void> {
                     resultMap.put(method.getName(), method.invoke(t));
                 } catch (IllegalAccessException | InvocationTargetException e) {
                    /*
-                        Add failed test to resultMap(Fail due to exception.)
+                        Add failed test to resultMap(Fail due to exception with cause.)
                     */
-                    resultMap.put(method.getName(), "FAILED: Generated exception: " + e);
+                    resultMap.put(method.getName(), "FAILED: Generated exception: " + e.getCause());
                     e.printStackTrace();
                 }
         }
